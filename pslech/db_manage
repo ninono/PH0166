@@ -1,0 +1,12 @@
+#!/bin/sh
+if [ "$1" = "reset" ]; then
+    python manage.py reset_db
+    python manage.py syncdb
+    python manage.py loaddata ./pslechdb/fixtures/*
+elif [ "$1" = "save" ]; then
+    rm ./pslechdb/fixtures/all.json
+    python manage.py dumpdata --indent 4 > ./pslechdb/fixtures/all.json
+else
+    echo "NO command"
+fi
+

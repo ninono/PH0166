@@ -1,0 +1,9 @@
+<!-- 
+param:
+q: a text question object 
+marked: boolean whether is already marked
+score: 
+-->
+{% load dict_lookup %}
+<textarea class="form-control" id="q-{{q.id}}" name="q-{{q.id}}" {% if marked %} onfocus="blur()" {% endif %}>{% if marked %}{{score|get_item:q.id|get_item:"response"}}{% endif %}</textarea>
+

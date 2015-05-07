@@ -1,0 +1,79 @@
+{% extends "pslechweb/practice.home.html" %}
+{% load dict_lookup %}
+{% load item_list %}
+
+{% block sidebar %}
+<li>主题</li>
+<li id="all-topic"><a href="/practice/{{part_choice.0}}/{{section_choice.0}}">全部</a></li>
+{% for topic in topics %}
+<li class="topic-select {% ifequal topic_choice|slugify topic.id|slugify %} active {% endifequal %}" id="{{topic.id}}"><a href="/practice/{{part_choice.0}}/{{section_choice.0}}/topic{{topic.id}}">{{topic.name}}</a></li>
+{% endfor %}
+{% if qtags %}
+<li>题型</li>
+{% for qtag in qtags %}
+<li class="qtag-select" id="{{qtag.name}}"><a href="?qtag={{qtag.id}}">{{qtag.name}}</a></li>
+{% endfor %}
+{% endif %}
+{% endblock %}
+
+{% block maincontent %}
+{% if not question_based %}
+
+    <p>{{part_choice.1}} {{section_choice.1}} 共计{{count}}题</p>
+    {% for passage in passages %}
+    <div class="panel panel-default {{passage.topic.name}} section">
+        <div class="panel-body">
+            题目{{forloop.counter}}: {{passage.preview}}
+            <a href="/practice/{{part_choice.0}}/{{section_choice.0}}/{{passage.id}}" class="btn btn-primary pull-right" role="button">开始</a>
+        </div>
+    </div>
+    {% endfor %}
+    <div class="pagination pull-right" >
+    <span class="step-links">
+        {% if passages.has_previous %}
+            <a href="?page={{ passages.previous_page_number }}" type="button" class="btn btn-default">上一页</a>
+        {% endif %}
+
+        <span class="current">
+            第{{ passages.number }}页 (共{{ passages.paginator.num_pages }}页 )
+        </span>
+        {% if passages.has_next %}
+            <a href="?page={{ passages.next_page_number }}" type="button" class="btn btn-default">下一页</a>
+        {% endif %}
+
+    </span>
+    </div>
+
+{% else %}
+    {%for qn in questions%}
+    <div class="qtagq" id="qtagq{{forloop.counter}}">
+    {% include "pslechweb/practice.question.html" with passage=qn.passage questions=qn|item_list%}
+    </div>
+    {% endfor %}
+    <button id="next-qn" class="btn btn-primary pull-right" current="1">下一题</button>
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script type="text/javascript">
+$(document).ready(function(){
+    $(".qtagq").hide();
+    $("#qtagq1").show();
+    $("#next-qn").click(function(){
+        var cur=$(this).attr('current');
+        if ($("#qtagq"+(parseInt(cur)+1)).length){
+            $("#qtagq"+cur).hide();
+            $("#qtagq"+(parseInt(cur)+1)).show();
+            $(this).attr('current',(parseInt(cur)+1));
+        }else{
+            $(this).attr('disabled','disabled');
+            $(this).attr('class',$(this).attr('class')+' disabled');
+            alert("没有更多此类题型的题目了");
+            }
+
+        });
+});
+</script>
+{% endblock %}

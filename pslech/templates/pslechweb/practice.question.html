@@ -1,0 +1,28 @@
+<!-- 
+param:
+passage: a passage object
+questions: list of question objects
+marked: boolean whether is already marked
+score: 
+-->
+{% load dict_lookup %}
+{% include "pslechweb/passage.html" %}
+<form action="/" class="qform"  method="POST" onsubmit="consolidateTable();">
+{% csrf_token %}
+{% for q in questions %}
+    {% include "pslechweb/question.html" with qnum=forloop.counter %}
+    <div class="panel panel-default view-solution-panel">
+        <div class="panel-heading">
+            <button type="button" class="btn btn-primary" >参考答案</button>
+        </div>
+        <div class="panel-body" style="display:none">
+            <p>{{q.solution.content}}</p>
+        </div>
+    </div>
+
+{% endfor %}
+{% if not marked %}
+<input type="submit" class="btn btn-primary" value="提交"></input>
+{% endif %}
+<a class="btn btn-primary" roll="button" href="/practice/">返回</a>
+</form>

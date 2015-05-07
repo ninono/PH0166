@@ -1,0 +1,54 @@
+{% extends "template.base.html" %}
+{% load dict_lookup %}
+
+{% block title %}CAT 练习{% endblock %}
+{% block content %}
+<div id="practice_home" class="row">
+        <div class="col-lg-10 col-lg-offset-1">
+          <h1>CAT练习</h1>
+          <blockquote>
+            <p>请选择一种题型以开始练习</p>
+            <small> 题目是根据您对每一种题型的掌握情况生成</small>
+          </blockquote>
+          {% if previous_session %}
+          <div class="alert alert-warning">
+            <strong>嗨!</strong> 好像您上次在未完成的情况下退出。是否<a href="/practice/resume/" class="alert-link">继续</a>?
+          </div>
+          {% endif %}
+
+          <div class="row row-thumbnail">
+            {% for qTag in qTags %}
+            <div class="col-sm-6 col-md-4">
+              <div class="thumbnail">
+                <div class="caption">
+                  <h3 style="min-height: 55px;">{{ qTag.name }}</h3>
+                  <!--<p>Placeholder for some descriptor text.</p>/-->
+                  <div class="thumbnail-section">目前评分</div>
+                  <div class="progress">
+                    {% if qTag_ability|get_item:qTag == None %}
+                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                    </div>
+                    <div style="text-align: center; font-size: 12px;">请完成更多题目以查看评分</div>
+                    {% elif qTag_ability|get_item:qTag <= 25 %}
+                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{ qTag_ability|get_item:qTag }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ qTag_ability|get_item:qTag }}%; min-width: 30%;">
+                      <span>继续努力!</span>
+                    </div>
+                    {% elif qTag_ability|get_item:qTag < 75 %}
+                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ qTag_ability|get_item:qTag }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ qTag_ability|get_item:qTag }}%;">
+                      <span>好!</span>
+                    </div>
+                    {% else %}
+                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ qTag_ability|get_item:qTag }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ qTag_ability|get_item:qTag }}%;">
+                      <span>非常棒!</span>
+                    </div>
+                    {% endif %}
+                  </div>
+                  <div class="text-right"><a href="/CATPractice/{{ qTag.id }}" class="btn btn-primary btn-sm" role="button">练习 {{ qTag.name }}</a></div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+      </div>
+      </div>
+{% endblock %}

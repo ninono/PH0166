@@ -1,0 +1,18 @@
+<!-- 
+param:
+q: a table question object 
+marked: boolean whether is already marked
+score: 
+-->
+{% load make_range %}
+{% load dict_lookup %}
+{% load func_call %}
+
+{% autoescape off %}
+{% if marked %}
+    {% with r=score|get_item:q.id|get_item:"response"%}{{q|method:"get_table_filled_presentation"|call_with:r}}{% endwith %}
+{% else %}
+    {{q.get_table_presentation}}
+{% endif %}
+{% endautoescape %}
+

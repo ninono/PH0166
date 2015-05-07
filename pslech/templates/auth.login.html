@@ -1,0 +1,64 @@
+{% extends "template.base.html" %}
+
+{% block title %}登录{% endblock %}
+
+{% block content %}
+      <div class="row">
+        <div class="col-lg-10 col-lg-offset-1">
+          <h1>Sign In</h1>
+          {% if not error %}
+          <div class="alert alert-info">
+            <strong>欢迎!</strong> 请使用电子邮件登录。如果您还没有账号，请<a href="/accounts/register/">注册</a>
+          </div>
+          {% elif error == 'disabled' %}
+          <div class="alert alert-danger">
+            <strong>错误!</strong> 对不起，您的账号已被注销。请 <a href="mailto:PSLEChineseComp2015@gmail.com">联系</a>网站管理员.
+          </div>
+          {% elif error == 'inactive' %}
+          <div class="alert alert-danger">
+            <strong>错误!</strong> 对不起，您还没有激活您的账号。请使用发送至您邮箱当中的激活链接激活
+          </div>
+          {% elif error == 'incorrect' %}
+          <div class="alert alert-danger">
+            <strong>错误!</strong> 对不起，您的信息有误
+          </div>
+          {% elif error == 'permission' %}
+          <div class="alert alert-danger">
+            <strong>错误!</strong> 对不起，您的账号没有权限访问此页面。请使用管理员帐号登录
+          </div>
+          {% endif %}
+          <form class="form-horizontal" method="post" role="form">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="username" class="col-sm-3 control-label">电子邮件</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" id="username" name="username" placeholder="电子邮件">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="password" class="col-sm-3 control-label">密码</label>
+              <div class="col-sm-6">
+                <input type="password" class="form-control" name="password" value="" id="password" placeholder="密码">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-3 col-sm-6">
+                <!--<div class="checkbox">
+                  <label>
+                    <input type="checkbox"> Remember me
+                  </label>
+                </div>-->
+                <a href="/accounts/forgot/">忘记密码？</a>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-3 col-sm-6">
+                <button type="submit" class="btn btn-primary">登录</button>
+              </div>
+            </div>
+            <input type="hidden" name="next" value="{{ next|escape }}" />
+          </form>
+        </div>
+        <br>
+      </div>
+{% endblock %}

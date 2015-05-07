@@ -1,0 +1,21 @@
+{% extends "template.base.html" %}
+
+{% block title %}CAT练习{% endblock %}
+{% block content %}
+
+{% include "pslechweb/passage.html" with passage=q.passage %}
+<form action="." method="POST" onsubmit="consolidateTable()">
+{% csrf_token %}
+{% include "pslechweb/question.html" %}
+<input type="hidden" name="answered" value={{q.id}}></input>
+{% if not marked %}
+<input type="submit" class="btn btn-primary" value="提交"></input>
+{% endif %}
+<a class="btn btn-primary" roll="button" href="/CATPractice/">返回</a>
+{% if marked %}
+<a class="btn btn-primary" roll="button" href=".">下一题</a>
+{% endif %}
+
+</form>
+
+{% endblock %}

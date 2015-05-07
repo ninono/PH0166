@@ -1,0 +1,38 @@
+{% extends "template.base.html" %}
+
+{% block title %}密码重置{% endblock %}
+
+{% block content %}
+      <div class="row">
+        <div class="col-md-12 col-lg-10 col-lg-offset-1">
+          <h1>Reset Password</h1>
+          <blockquote>
+            <p>请输入注册邮箱以重置密码</p>
+          </blockquote>
+          {% if form.errors %}
+          <div class="alert alert-danger">
+            <strong>对不起!</strong> 您输入的信息有误，请检查后重新提交
+          </div>
+          {% endif %}
+          <form class="form-horizontal" method="post" role="form">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="form-group {% if form.email.errors %}has-error{% endif %}">
+              <label for="{{ form.email.id_for_label }}" class="col-sm-3 control-label">电子邮件</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" id="{{ form.email.id_for_label }}" name="{{ form.email.html_name }}" placeholder="电子邮箱" value="{{ form.email.value|default_if_none:'' }}" maxlength="{{ form.email.field.max_length }}">
+              </div>
+              <div class="col-sm-3">
+                {{ form.email.errors }}
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-6 col-sm-offset-3 ">
+                <button type="submit" id="register_btn" class="btn btn-primary" data-loading-text="重置中...">重置密码</button>
+                <a class="btn btn-default" href="/">取消</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+{% endblock %}

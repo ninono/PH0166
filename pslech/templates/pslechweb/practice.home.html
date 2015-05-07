@@ -1,0 +1,47 @@
+{% extends "template.base.html" %}
+
+{% block title %}阅读理解练习{% endblock%}
+
+{% block content %}
+<div class="row">
+    <div class="col-xs-2">
+<ul class="nav nav-pills nav-stacked" id="nav-top">
+{% block sidebar %}
+    <li>
+        <a data-toggle="collapse" data-parent="#nav-top" href="#part1nav">阅读理解一</a>
+        <ul id="part1nav" class="nav nav-collapse collapse in">
+            <li><a href="/practice/P1/SA">A组</a></li>
+            <li><a href="/practice/P1/SB">B组</a></li>
+        </ul>
+    </li>
+    <li>
+        <a data-toggle="collapse" data-parent="#nav-top" href="#part2nav">阅读理解二</a>
+        <ul id="part2nav" class="nav nav-collapse collapse in">
+            <li><a href="/practice/P2/SA">A组</a></li>
+            <li><a href="/practice/P2/SB">B组</a></li>
+        </ul>
+    </li>
+{% endblock %}
+</ul>
+</div>
+<div class="col-xs-10">
+{% block maincontent %}
+    <p>本题库完全遵照教育部最新颁发的PSLE华文试题样本”阅读理解“项目编排。</p>
+    <p>每个练习包括“阅读理解一”与“阅读理解二”。</p>
+    <p>“阅读理解一”的题式是多项选择，每一题提供四个选项，让学生选出最准确的选项。</p>
+    <p>"阅读理解二“的题式是自由作答，需要学生用文字回答问题。</p>
+{% endblock %}
+</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script type="text/javascript">
+$(document).ready(function(){
+    $(".view-solution-panel button").click(function(){
+        $(this).parents(".view-solution-panel").children(".panel-body").toggle()
+    });
+});
+</script>
+{% endblock %}

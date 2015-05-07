@@ -1,0 +1,12 @@
+<!-- 
+param:
+q: a mcq question object 
+marked: boolean whether is already marked
+-->
+{% load dict_lookup %}
+{% if marked %}</p>你所选择的是: {{score|get_item:q.id|get_item:"response"}}</p>{% endif %}
+<input type="radio" name="q-{{q.id}}" value="A" {% if marked %}disabled {% endif %}>A. {{q.get_choices|get_item:'a'}}<br>
+<input type="radio" name="q-{{q.id}}" value="B" {% if marked %}disabled {% endif %}>B. {{q.get_choices|get_item:'b'}}<br>
+<input type="radio" name="q-{{q.id}}" value="C" {% if marked %}disabled {% endif %}>C. {{q.get_choices|get_item:'c'}}<br>
+<input type="radio" name="q-{{q.id}}" value="D" {% if marked %}disabled {% endif %}>D. {{q.get_choices|get_item:'d'}}<br>
+

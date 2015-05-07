@@ -1,0 +1,8 @@
+亲爱的 {{ first_name }} {{ last_name }},
+
+感谢您的注册。请点击下面链接以完成注册
+
+{% if is_secure %}https://{% else %}http://{% endif %}{{ host }}/accounts/activate/?key={{ activation_key }}
+
+谢谢,
+{{ sender }}

@@ -1,0 +1,217 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{{ PROJECT_NAME }} | {% block title %}{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" media="screen">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/pslechweb.css' %}">
+    {% block extrastyle %}
+    {% endblock %}
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="{% static 'js/html5shiv.js' %}"></script>
+      <script src="{% static 'js/respond.min.js' %}"></script>
+    <![endif]-->
+
+    {% block extrahead %}
+    {% endblock %}
+    {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
+  </head>
+  <body>
+    <div id="mainnavbar" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">华文阅读理解训练系统<div style="color: #428BCA; font-size: 14px;">PSLE CHINESE</div><div style="color: #428BCA; font-size: 14px; display: none;">Adaptive Educational System</div></a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/home/"><span class="glyphicon glyphicon-home"></span></a></li>
+            {% if not user.is_authenticated %}
+            <li><a href="#about">关于</a></li>
+            {% endif %}
+            {% if user.is_authenticated %}
+            <li><a href="/tip/"><span class="glyphicon glyphicon-tag"></span>备考小贴士</a></li>
+            <li><a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-pencil"></span>阅读理解练习<span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="/practice/P1/SA">阅读理解一 A组</a></li>
+                    <li><a href="/practice/P1/SB">阅读理解一 B组</a></li>
+                    <li class="divider"></li>
+                    <li><a href="/practice/P2/SA">阅读理解二 A组</a></li>
+                    <li><a href="/practice/P2/SB">阅读理解二 B组</a></li>
+                </ul>
+            </li>
+            <li><a href="/CATPractice/"><span class="glyphicon glyphicon-book"></span>CAT测验</a></li>
+            {% endif %}
+            {% if user.is_superuser %}
+            <li><a href="/admin/"><span class="glyphicon glyphicon-wrench"></span> Db Admin</a></li>
+            {% endif %}
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            {% if user.is_authenticated %}
+            {## Show user name and profile ##}
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.get_full_name }}</a>
+              <ul class="dropdown-menu">
+                <!--<li><a href="#">Change Password</a></li>
+                <li class="divider"></li>-->
+                <li><a href="/accounts/logout/">退出</a></li>
+              </ul>
+            </li>
+            {% else %}
+            {## Show register and sign in menus ##}
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">登录</a>
+              <ul class="dropdown-menu nav-login">
+                <li class="nav-login-content">
+                  <form action="/accounts/login/" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                      <label for="loginInputEmail">电子邮箱</label>
+                      <input type="text" class="form-control" id="loginInputEmail" name="username" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                      <label for="loginInputPassword">密码</label>
+                      <input type="password" class="form-control" id="loginInputPassword" name="password" placeholder="Password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">登录</button>
+                  </form>
+                </li>
+                <li class="divider"></li>
+                <li class="nav-login-content">新的用户？ <span><a href="/accounts/register/">注册</a></span></li>
+            </li>
+            {% endif %}
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container">
+      {% block content %}
+      <div class="jumbotron">
+        <h1>你好!</h1>
+        <h2>欢迎来到 {{ PROJECT_NAME }}</h2>
+        <br>
+        <p>An academic project of a final year student. We hope this provides you with a conducive and enjoyable environment to learn and practice PSLE Chinese comprehension questions!</p>
+        <p><a class="btn btn-success btn-lg" role="button" href="/accounts/register/">注册</a></p>
+      </div>
+      {% endblock %}
+    </div><!-- /.container -->
+
+    {% block scripts %}
+    <script src="{% static 'js/jquery-1.10.2.min.js' %}"></script>
+    <script src="{% static 'js/jquery.plugin.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/chart.min.js' %}"></script>
+    <script src="{% static 'js/run_prettify.js' %}"></script>
+    <script src="{% static 'js/jquery.countdown.min.js' %}"></script>
+    <script src="{% static 'js/pslechweb.js' %}"></script>
+    <script type="text/javascript">
+
+        function consolidateTable(){
+            $('.table-qn:visible').each(function(){
+                var ans="";
+                $(this).find('textarea').each(function(){
+                    ans+=$(this).val()+"\n";
+                    });
+                var ele=$("<textarea>");
+                ele.hide();
+                ele.val(ans);
+                ele.attr('name',$(this).attr('id'));
+                $(this).append(ele);
+                console.log(ele.attr('name'));
+            });
+        }
+    $(document).ready(function(){
+        function getCookie(name){
+            var cookieValue = null;
+            if(document.cookie && document.cookie != ""){
+                var cookies=document.cookie.split(';');
+                for(var i=0;i<cookies.length;i++){
+                    var cookie=jQuery.trim(cookies[i]);
+                    if (cookie.substring(0,name.length+1)==(name+'=')){
+                        cookieValue=decodeURIComponent(cookie.substring(name.length+1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken=getCookie('csrftoken');
+        function csrfSafeMethod(method){
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            beforeSend:function(xhr,settings){
+                if(!csrfSafeMethod(settings.type) && ! this.crossDomain){
+                    xhr.setRequestHeader("X-CSRFToken",csrftoken);
+                }
+            }
+        });
+
+        $(".qform").submit(function(event){
+            event.preventDefault();
+            $(this).find(".question-div").each(function(){
+                var ans=$(this).find("[name|='q']");
+                var qid=ans.attr("name");
+                if ($(ans).attr("type")=="radio"){
+                    var response=$(ans).filter(":checked").val();
+                }else{
+                    var response=ans.val();
+                }
+                var obj={};
+                obj["qid"]=qid.substring(2);
+                obj["response"]=response;
+                var posting=$.post("/mark/",obj);
+                var mark=$(this).find(".mark");
+                var feedback=$(this).find(".feedback");
+                $(feedback).empty();
+
+                posting.done(function(data){
+                    console.log(data["content"]);
+                    mark.text(data["content"]["score"]+"/");
+                    if(data["content"]["feedback_pos"]){
+                        $("<li class='list-group-item list-group-item-success'>您的回答包含以下内容</li>").appendTo(feedback);
+                        for (var i=0;i<data["content"]["feedback_pos"].length;i++){
+                            $("<li class='list-group-item'>"+data["content"]["feedback_pos"][i]+"</li>").appendTo(feedback);
+                        }
+                    }
+                    if(data["content"]["feedback_neg"]){
+                        $("<li class='list-group-item list-group-item-danger'>您的回答未包含以下要点</li>").appendTo(feedback);
+                        for (var i=0;i<data["content"]["feedback_neg"].length;i++){
+                            $("<li class='list-group-item'>"+data["content"]["feedback_neg"][i]+"</li>").appendTo(feedback);
+                        }
+                    }
+                    if(data["content"]["feedback_syn"]&&data["content"]["feedback_syn"].length>0){
+                        $("<li class='list-group-item list-group-item-danger'>语法错误</li>").appendTo(feedback);
+                        for (var i=0;i<data["content"]["feedback_syn"].length;i++){
+                            var e=data["content"]["feedback_syn"][i];
+                            console.log(e.contextoffset+e.errorlength);
+                            $("<li class='list-group-item'>"+"在 \""+e.context.slice(0,e.contextoffset)+"<span class='err-underline'>"+e.context.slice(e.contextoffset,parseInt(e.contextoffset)+parseInt(e.errorlength))+"</span>"+e.context.slice(parseInt(e.contextoffset)+parseInt(e.errorlength))+"\" 中:"+e.msg+"</li>").appendTo(feedback);
+                        }
+                    }
+
+                });
+                
+            });
+            return false;
+        });
+    });
+            
+
+</script>
+    {% endblock %}
+  </body>
+</html>

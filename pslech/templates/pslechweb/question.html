@@ -1,0 +1,28 @@
+<!-- 
+param:
+q: a question object 
+marked: boolean whether is already marked
+score: 
+-->
+{% load dict_lookup %}
+<div class="panel panel-default question-div">
+    <div class="panel-heading">
+        {% if qnum %}{{qnum}}. {%endif%}{{q.get_question}}
+        <div class="pull-right">分数:<span class="mark">{% if marked %}{{score|get_item:q.id|get_item:"mark"}}/{% endif %}</span>{{q.mark}}</div>
+    </div>
+    <div class="panel-body">
+        {% if q.isTable %}
+        {% include "pslechweb/question.table.html" %}
+        {% else %}
+            {% ifequal q.get_choices None %}
+                {% include "pslechweb/question.text.html" %}
+            {% else %}
+                {% include "pslechweb/question.mcq.html" %}
+            {% endifequal %}
+        {% endif %}
+        <ul class="list-group feedback">
+        </ul>
+   </div>
+</div>
+
+

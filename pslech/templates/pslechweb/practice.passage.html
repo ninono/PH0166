@@ -1,0 +1,16 @@
+{% extends "pslechweb/practice.home.html" %}
+{% block sidebar %}
+<li>主题</li>
+{% for topic in topics %}
+{% ifequal passage.topic.name topic.name %}
+<li class="topic-select active" id="{{topic.name}}"><a>{{topic.name}}</a></li>
+{% else %}
+<li class="topic-select" id="{{topic.name}}"><a>{{topic.name}}</a></li>
+{% endifequal %}
+{% endfor %}
+{% endblock %}
+
+{% block maincontent %}
+{% include "pslechweb/practice.question.html" %}
+{% endblock %}
+

@@ -1,0 +1,43 @@
+{% extends "template.base.html" %}
+{% load staticfiles %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+      <div class="well">
+        <h1>欢迎! <small class="pull-right">{{ PROJECT_NAME }} v1.0</small></h1>
+        <p>本系统是专为参加PSLE华文的小六学生制作，欢迎老师推荐采用</p>
+      </div>
+      <div class="row row-thumbnail">
+        <div class="col-sm-4">
+          <div class="thumbnail">
+            <img src="{% static '/static/images/tip.png' %}" alt="Exercises">
+            <div class="caption">
+              <h3>备考小贴士</h3>
+              <p><strong>备考小贴士</strong>会不定期为同学们整理相关华文阅读资料， 提供指导应考PSLE华文的技巧与窍门，帮助学生考取高分。</p>
+              <div class="text-right"><a href="/tip/" class="btn btn-primary" role="button">阅读</a></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="thumbnail">
+            <img src="{% static '/static/images/practice.png' %}" alt="CAT Test">
+            <div class="caption">
+              <h3>阅读理解练习</h3>
+              <p><strong>阅读理解练习</strong>完全遵照教育部最新颁发的PSLE华文试题样本的“阅读理解”项目编写，每个练习包括“阅读理解一” 与 “阅读理解二”。学生可以根据文章类型或题型进行针对性练习。</p>
+              <div class="text-right"><a href="/practice/" class="btn btn-primary" role="button">开始</a></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="thumbnail">
+            <img src="{% static '/static/images/paper.png' %}" alt="Paper Test">
+            <div class="caption">
+              <h3>CAT测验</h3>
+              <p><strong>CAT测验</strong>CAT测验(Computerized Adaptive Testing)，又名为计算机自适应测验。 学生可选择想要练习的题型，CAT则根据学生回答被试题能力进行选题。题目针对性强，较少的题目就可以精确的估计出学生的作答能力。</p>
+              <div class="text-right"><a href="/paper/" class="btn btn-primary" role="button">开始</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+{% endblock %}

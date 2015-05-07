@@ -1,0 +1,35 @@
+{% extends "template.base.html" %}
+
+{% block title %}tips{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-xs-2">
+<ul class="nav nav-pills nav-stacked">
+    {% for tip in tips %}
+    <li><a class='tip' id='{{tip.id}}'>{{tip.title}}</a> </li>
+    {% endfor %}
+</ul>
+    </div>
+<div class="col-xs-10">
+    {% for tip in tips %}
+    <div class="tip-content" style="display:none" id={{tip.id}}>
+        {% autoescape off %}
+        {{tip.content}}
+        {% endautoescape %}
+    </div>
+    {% endfor %}
+</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{block.super}}
+<script>
+$('.tip').click(function(){
+    var i=$(this).attr('id');
+    $('.tip-content').hide();
+    $('.tip-content[id='+i+']').show();
+});
+$('.tip-content[id=1]').show();
+</script>
+{% endblock %}
