@@ -28,7 +28,7 @@ To run the server
 ---------------------
 1. In `LanguageTool-2.9-SNAPSHOT` folder, run:
     `./startserver.sh`
-    to run syntex checking server
+    to run syntax checking server
 2. In `pslech` folder, run:
     `python manage.py runserver`
     
