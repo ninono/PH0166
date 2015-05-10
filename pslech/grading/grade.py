@@ -22,7 +22,7 @@ def grade(method,solution,response,total_mark):
         raise KeyError("method does not exist")
     if method in ["exact","mcq"]:
         if solution==response:
-            return {"score":1}
+            return {"score":total_mark}
         else:
             return {"score":0}
     sem_grade=sematic_grade(method,solution,response)
